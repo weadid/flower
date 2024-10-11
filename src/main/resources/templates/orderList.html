@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Список студентов</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5dc; /* Бежевый фон */
+      color: #4b0082; /* Лиловый текст */
+      margin: 0;
+      padding: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #6a5acd; /* Более светлый лиловый */
+    }
+    form {
+      background-color: #e6e6fa; /* Светло-фиолетовый фон для форм */
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    input[type="text"], select {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #6a5acd; /* Лиловая кнопка */
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #483d8b; /* Темно-фиолетовый при наведении */
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      background-color: #e6e6fa; /* Светло-фиолетовый фон для элементов списка */
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    }
+    .error {
+      color: red;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+<div th:insert="blocks/header2"></div>
+<h1>Список заказов</h1>
+<form action="/orders/add" method="post" th:object="${order}">
+  <input type="text" name="address" placeholder="Адресс" th:field="*{address}" required>
+  <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Адресс не должно быть меньше чем 3 символа</div>
+  <div>
+    <label for="bouquetClient">Букет: </label>
+    <select id="bouquetClient" th:field="*{bouquetClient}">
+      <option th:each="bouquetClient : ${bouquetClients}" th:value="${bouquetClient.id}"
+              th:text="${bouquetClient.FLower1}"></option>
+    </select>
+  </div>
+  <div>
+    <label for="client">Клиент: </label>
+    <select id="client" th:field="*{client}">
+      <option th:each="client : ${clients}" th:value="${client.id}"
+              th:text="${client.name}"></option>
+    </select>
+  </div>
+  <button type="submit" formmethod="post">Добавить заказ</button>
+</form>
+
+<h2>Все заказы: </h2>
+<ul>
+  <th:block th:each="order : ${orders}">
+    <li>
+      <span th:text="${order.address} "></span>
+      <form action="/orders/update" method="post" style="display:inline;">
+        <input type="hidden" name="id" th:value="${order.id}">
+        <input type="text" name="address" th:value="${order.address}" placeholder="Адресс" required>
+        <button type="submit" formmethod="post">Обновить</button>
+      </form>
+      <form action="/orders/delete" method="post" style="display:inline;">
+        <input type="hidden" name="id" th:value="${order.id}">
+        <button type="submit" formmethod="post">Удалить</button>
+      </form>
+    </li>
+  </th:block>
+</ul>
+</body>
+</html>

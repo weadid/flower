@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Подробная информация о пользователе</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5dc; /* Бежевый фон */
+            color: #4b0082; /* Лиловый текст */
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #e6e6fa; /* Светлый лиловый фон контейнера */
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px auto;
+            width: 400px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #6a5acd; /* Светлый лиловый цвет */
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #6a5acd; /* Лиловая кнопка */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            margin: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .btn-warning {
+            background-color: #ffcc00; /* Жёлтая кнопка для редактирования */
+        }
+
+        .btn-warning:hover {
+            background-color: #e6b800; /* Темнее при наведении */
+        }
+
+        .btn-success:hover {
+            background-color: #5cb85c; /* Темнее при наведении */
+        }
+
+        .btn:hover {
+            background-color: #483d8b; /* Темное лиловое при наведении */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 th:text="'Пользователь: ' + ${user_object.username}"></h1>
+    <div class="container">
+        <h2 th:text="'Роли: ' + ${user_object.roles}"></h2>
+        <p th:text="${user_object.active} == True ? 'Пользователь активен' : 'Пользователь заблокирован'"></p>
+    </div>
+    <a th:href="'/admin/users/' + ${user_object.idUser} + '/update'" class="btn btn-warning">Редактировать</a>
+    <a href="/admin/users" class="btn btn-success">Назад</a>
+</div>
+</body>
+</html>

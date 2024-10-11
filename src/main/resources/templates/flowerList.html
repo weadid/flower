@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Список цветов</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f5e7; /* Бежевый фон */
+      color: #4b3c7f; /* Лиловый текст */
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #5a4f8f; /* Темный лиловый для заголовка */
+    }
+
+    form {
+      background-color: #e8d1f2; /* Светлый лиловый фон для формы */
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"], input[type="hidden"], button {
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #d4c3e5; /* Легкая рамка */
+      border-radius: 5px;
+      width: calc(100% - 22px); /* Учитываем отступы */
+    }
+
+    button {
+      background-color: #4b3c7f; /* Лиловая кнопка */
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #5a4f8f; /* Темный лиловый при наведении */
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background-color: #e8d1f2; /* Светлый лиловый фон для списка цветов */
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+<div th:insert="blocks/header"></div>
+<h1>Список цветов</h1>
+<form action="/flowers/add" method="post" th:object="${flower}">
+  <input type="text" name="name" placeholder="Имя" th:field="*{name}" required>
+  <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error">Имя не должно быть меньше чем 3 символа</div>
+  <input type="text" name="color" placeholder="Цвет" th:field="*{color}" required>
+  <div th:if="${#fields.hasErrors('color')}" th:errors="*{color}" class="error">Цвет не должен быть меньше чем 3 символа</div>
+  <button type="submit" formmethod="post">Добавить цвет</button>
+</form>
+
+<h2>Все цветы: </h2>
+<ul>
+  <th:block th:each="flower : ${flowers}">
+    <li>
+      <span th:text="${flower.name} + ' ' + ${flower.color}"></span>
+      <form action="/flowers/update" method="post" style="display:inline;">
+        <input type="hidden" name="id" th:value="${flower.id}">
+        <input type="text" name="name" th:value="${flower.name}" placeholder="Имя" required>
+        <input type="text" name="color" th:value="${flower.color}" placeholder="Цвет" required>
+        <button type="submit" formmethod="post">Обновить</button>
+      </form>
+      <form action="/flowers/delete" method="post" style="display:inline;">
+        <input type="hidden" name="id" th:value="${flower.id}">
+        <button type="submit" formmethod="post">Удалить</button>
+      </form>
+    </li>
+  </th:block>
+</ul>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Список заказов</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5dc; /* Бежевый фон */
+      color: #4b0082; /* Лиловый текст */
+      margin: 0;
+      padding: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #6a5acd; /* Более светлый лиловый */
+    }
+    form {
+      background-color: #e6e6fa; /* Светло-фиолетовый фон для форм */
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    input[type="text"], select {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #6a5acd; /* Лиловая кнопка */
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #483d8b; /* Темно-фиолетовый при наведении */
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      background-color: #e6e6fa; /* Светло-фиолетовый фон для элементов списка */
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    }
+    .error {
+      color: red;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+<div th:insert="blocks/header"></div>
+<h1>Список заказов</h1>
+<form action="/payments/add" method="post" th:object="${payment}">
+  <input type="text" name="paymentDate" placeholder="Дата оплаты" th:field="*{paymentDate}" required>
+  <input type="text" name="paymentMethod" placeholder="Метод оплаты" th:field="*{paymentMethod}" required>
+
+  <div>
+    <label for="order">Букет:</label>
+    <select id="order" th:field="*{order}">
+      <option value="" disabled selected>Выберите букет</option>
+      <option th:each="order : ${orders}" th:value="${order.id}"
+              th:text="${order.address}"></option>
+    </select>
+  </div>
+
+  <button type="submit">Добавить заказ</button>
+</form>
+
+<h2>Все заказы:</h2>
+<ul>
+  <th:block th:each="payment : ${payments}">
+    <li>
+      <span th:text="${payment.paymentDate} + ' ' + ${payment.paymentMethod}"></span>
+
+      <form action="/payments/update" method="post" style="display:inline;">
+        <input type="hidden" name="id" th:value="${payment.id}">
+        <input type="text" name="paymentDate" th:value="${payment.paymentDate}" placeholder="Дата оплаты" required>
+        <input type="text" name="paymentMethod" th:value="${payment.paymentMethod}" placeholder="Метод оплаты" required>
+        <button type="submit">Обновить</button>
+      </form>
+
+      <form action="/payments/delete" method="post" style="display:inline;">
+        <input type="hidden" name="id" th:value="${payment.id}">
+        <button type="submit">Удалить</button>
+      </form>
+    </li>
+  </th:block>
+</ul>
+</body>
+</html>

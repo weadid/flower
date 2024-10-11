@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Список студентов</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5dc; /* Бежевый фон */
+      color: #4b0082; /* Лиловый текст */
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #6a5acd; /* Светлый лиловый цвет */
+    }
+
+    form {
+      background-color: #e6e6fa; /* Светлый лиловый фон формы */
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px auto;
+      width: 300px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    input[type="text"] {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #6a5acd; /* Лиловая кнопка */
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #483d8b; /* Темное лиловое при наведении */
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background-color: #fff; /* Белый фон для списка */
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin: 10px 0;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    form[style*="display:inline;"] {
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+<div th:insert="blocks/header2"></div>
+<h1>Создайте ваш букет с помощью существующего</h1>
+<form action="/bouquetClients/add" method="post" th:object="${bouquetClient}">
+
+  <input type="text" name="FLower1" placeholder="Цветок" th:field="*{FLower1}" required>
+  <input type="text" name="FLower2" placeholder="Цветок" th:field="*{FLower2}" required>
+  <input type="text" name="FLower3" placeholder="Цветок" th:field="*{FLower3}">
+  <input type="text" name="FLower4" placeholder="Цветок" th:field="*{FLower4}">
+  <input type="text" name="paper" placeholder="Упаковка" th:field="*{paper}">
+  <button type="submit" formmethod="post">Добавить букет</button>
+</form>
+
+<h2>Все созданные букеты: </h2>
+<ul>
+  <th:block th:each="bouquetClient : ${bouquetClients}">
+    <li>
+      <span th:text="${bouquetClient.FLower1} + ' ' + ${bouquetClient.FLower2} + ' ' + ${bouquetClient.FLower3} + ' ' + ${bouquetClient.FLower4} + ' ' + ${bouquetClient.paper}"></span>
+      <form action="/bouquetClients/update" method="post" style="display:inline;">
+        <input type="hidden" name="id" th:value="${bouquetClient.id}">
+        <input type="text" name="FLower1" th:value="${bouquetClient.FLower1}" placeholder="Цветок">
+        <input type="text" name="FLower2" th:value="${bouquetClient.FLower2}" placeholder="Цветок">
+        <input type="text" name="FLower3" th:value="${bouquetClient.FLower3}" placeholder="Цветок">
+        <input type="text" name="FLower4" th:value="${bouquetClient.FLower4}" placeholder="Цветок">
+        <input type="text" name="paper" th:value="${bouquetClient.paper}" placeholder="Упаковка">
+        <button type="submit" formmethod="post">Обновить</button>
+      </form>
+      <form action="/bouquetClients/delete" method="post" style="display:inline;">
+        <input type="hidden" name="id" th:value="${bouquetClient.id}">
+        <button type="submit" formmethod="post">Удалить</button>
+      </form>
+    </li>
+  </th:block>
+</ul>
+</body>
+</html>

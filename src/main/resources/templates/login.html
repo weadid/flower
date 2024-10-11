@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+    <style>
+        body {
+            background-color: #f5f5dc; /* Бежевый фон */
+            font-family: Arial, sans-serif;
+            color: #4b0082; /* Лиловый цвет текста */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+
+        form {
+            background-color: #e6e6fa; /* Светло-лиловый фон для формы */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #4b0082; /* Лиловая кнопка */
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #6a0dad; /* Более светлый лиловый при наведении */
+        }
+
+        a {
+            margin-top: 15px;
+            color: #4b0082; /* Лиловый цвет ссылки */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<h1>Авторизация</h1>
+<div th:if="${param.error}" class="error">
+    Неверное имя пользователя или пароль.
+</div>
+
+<form th:action="@{/login}" method="post">
+    <div>
+        <label>Логин: <input type="text" name="username" required/></label>
+    </div>
+    <div>
+        <label>Пароль: <input type="password" name="password" required/></label>
+    </div>
+    <div>
+        <input type="submit" value="Авторизация">
+    </div>
+</form>
+<a href="/registration">Регистрация</a>
+</body>
+</html>
